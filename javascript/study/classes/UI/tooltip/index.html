@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>tooltip</title>
+    <link rel="stylesheet" href="./css/main.css">
+</head>
+<body>
+
+    <div class="container">
+        <h1>My awesome tooltip</h1>
+
+        <p>Lorem ipsum dolor sit amet consectetur adipisicing elit.
+
+            <!--? custom element -->
+            <popup-notify tip_background="#f2f2f2" tip_color="#0c0c0c">
+                <span slot="message">
+                    Lorem ipsum dolor sit amet.
+                    Lorem ipsum dolor sit amet.
+                    Lorem ipsum dolor sit amet.
+                </span>
+            </popup-notify>
+
+            Sed facilis tempora pariatur debitis officiis expedita.
+        </p>
+    </div>
+
+    <script src="./js/popupNotify.js"></script>
+</body>
+</html> 
