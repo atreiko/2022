@@ -1,0 +1,23 @@
+@import "fonts";
+
+body {
+  font-family: Montserrat;
+  background-color: #fff;
+  background: url('@img/google.png');
+  span {
+    color: #ccc;
+  }
+}
+
+@media (max-width: 768px) {
+  span {
+    font-size: 20px;
+  }
+
+}
+
+@media (max-width: 768px) {
+  body {
+    background-color: green;
+  }
+}
