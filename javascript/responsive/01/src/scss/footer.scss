@@ -1,0 +1,9 @@
+@import "vars";
+
+footer {
+  position: absolute;
+  bottom: 0;
+  height: 60vh;
+  background-color: $bg-primary;
+  opacity: 0.7;
+}

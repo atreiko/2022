@@ -1,0 +1,115 @@
+@import "fonts";
+@import "vars";
+@import "header";
+@import "footer";
+
+html, body, div, span, applet, object, iframe, h1, h2, 
+h3, h4, h5, h6, p, blockquote, pre, a, abbr, acronym, 
+address, big, cite, code, del, dfn, em, img, ins, kbd, 
+q, s, samp, small, strike, strong, sub, sup, tt, var, b, 
+u, i, center, dl, dt, dd, ol, ul, li, fieldset, form, label, 
+legend, table, caption, tbody, tfoot, thead, tr, th, td, 
+article, aside, canvas, details, embed, figure, figcaption, 
+footer, header, hgroup, menu, nav, output, ruby, section, 
+summary, time, mark, audio, video {
+  margin: 0;
+  padding: 0;
+  border: 0;
+  font-size: 100%;
+  vertical-align: baseline; 
+}
+
+body {
+  font-family: Montserrat, sans-serif;
+  font-size: 16px;
+  line-height: 1;
+  position: relative;
+
+  & .overlay {
+    max-width: 1300px;
+    width: 100%;
+    margin: 0 auto;
+    position: relative;
+    overflow: hidden;
+
+    height: 1000px;
+
+    border-right: 1px solid rgba(255, 255, 255, .1);
+    border-left: 1px solid  rgba(255, 255, 255, .1);
+
+    &::after, &::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      bottom: 0;
+      width: 1px;
+      background: rgba(255, 255, 255, .1);
+      z-index: 1;
+    }
+    &::after { right: 33.3%; }
+    &::before { left: 33.3%; }
+  }
+}
+
+ol, ul {
+  list-style: none; 
+}
+
+button {
+  background-color: transparent;
+  outline: none;
+  border: 0;
+  cursor: pointer; 
+}
+
+a {
+  cursor: pointer;
+  text-decoration: none;
+}
+
+#box {
+  height: 300vh;
+  background-color: $bg-primary;
+  background-image: $bg-gradient;
+}
+
+.container {
+  max-width: $mw + px;
+  width: 100%;
+  margin: 0 auto;
+  @media (max-width: 1300px) {
+    max-width: $md1;
+  }
+  @media (max-width: $md1) {
+    max-width: $md2;
+  }
+  @media (max-width: $md2) {
+    max-width: $md3;
+  }
+  @media (max-width: $md3) {
+    max-width: $md4;
+  }
+}
+
+//! GRID HELPER --------
+// .grid__dev {
+//   position: absolute;
+//   top: 0;
+//   bottom: 0;
+//   height: 100%;
+//   width: 100%;
+//   display: flex;
+//   justify-content: space-between;
+//     &-item {
+//       width: 1px;
+//       height: 100%;
+//       background-color: #fff;
+//       opacity: .3;
+//     }
+// }
+//! --------------------
+
+
+
+
+

@@ -1,0 +1,7 @@
+footer {
+  position: absolute;
+  bottom: 0;
+  height: 60vh;
+  background-color: #29524a;
+  opacity: 0.7;
+}

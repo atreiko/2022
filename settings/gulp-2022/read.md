@@ -25,5 +25,6 @@ copy -->
   src
   gulpfile.js
   package.json
+  .gitignore
 -->
 to start your project\
