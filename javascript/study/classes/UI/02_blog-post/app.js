@@ -10,6 +10,7 @@ class BlogPost extends HTMLElement {
 
   connectedCallback() {
     console.log('-- mounted');
+    this.render()
   }
 
   disconnectedCallback() {
@@ -29,16 +30,5 @@ class BlogPost extends HTMLElement {
 
 customElements.define('blog-post', BlogPost)
 
-{
-  const post = document.querySelector('blog-post');
-  post.shadowRoot.querySelector('.blog-post') // work -> { mode: 'open' }
-    .style.background = '#900'
-}
 
-{
-  const post = document.querySelector('blog-post');
-  setTimeout(() => {
-    post.remove()
-  }, 2000)
-}
 

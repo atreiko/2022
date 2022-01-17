@@ -1,0 +1,19 @@
+.lesson__item-list_red {
+  color: red;
+}
+
+.lesson__item-list_blue {
+  position: relative;
+  color: blue;
+  padding-left: 64px;
+}
+
+.lesson__item-list_blue::after {
+  content: '';
+  position: absolute;
+  width: 8px;
+  height: 8px;
+  background-color: blue;
+  left: 3rem;
+  top: 6px;
+}

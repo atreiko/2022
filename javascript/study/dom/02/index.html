@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+  <link rel="stylesheet" href="./styles.css">
+</head>
+<body>
+  <h1></h1>
+  <div class="lesson">
+    <div class="lesson__text">Text</div>
+    <ul name="list" class="lesson__list">
+      <li class="lesson__item-list lesson__item-list_red">Item 1</li>
+      <li id="listItem" class="lesson__item-list">Item 2</li>
+      <li data-item="45" class="lesson__item-list">Item 3
+        <ul class="lesson__sub-list">
+          <li class="lesson__item-sub-list">SubItem 1</li>
+          <li data-item="85" class="lesson__item-sub-list">SubItem 2</li>
+          <li class="lesson__item-sub-list">SubItem 3</li>
+        </ul>
+      </li>
+      <li class="lesson__item-list lesson__item-list_blue">Item 4</li>
+    </ul>
+  </div>  
+  <script src="main.js"></script>
+</body>
+</html>

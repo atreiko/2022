@@ -50,6 +50,7 @@ function (_HTMLElement) {
     key: "connectedCallback",
     value: function connectedCallback() {
       console.log('-- mounted');
+      this.render();
     }
   }, {
     key: "disconnectedCallback",
@@ -67,15 +68,3 @@ function (_HTMLElement) {
 }(_wrapNativeSuper(HTMLElement));
 
 customElements.define('blog-post', BlogPost);
-{
-  var post = document.querySelector('blog-post');
-  post.shadowRoot.querySelector('.blog-post') // work -> { mode: 'open' }
-  .style.background = '#900';
-}
-{
-  var _post = document.querySelector('blog-post');
-
-  setTimeout(function () {
-    _post.remove();
-  }, 2000);
-}
