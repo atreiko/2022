@@ -1,0 +1,72 @@
+*, 
+*::before, 
+*::after {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 1em;
+  font-family: 'Poppins';
+  background: rgb(241, 241, 241);
+}
+
+.card {
+  background: #fff;
+  padding: 1em;
+  margin-top: 2em;
+}
+
+img {
+  width: 100%;
+}
+
+p {
+  margin: 0;
+}
+
+.wrapper {          /* Элемент содержимого */
+  contain: layout inline-size;
+}
+
+.content {
+  margin: 1em;
+
+  .title {
+    font-size: 1.8rem;
+    font-weight: bold;
+  }
+
+  .col-2 {
+    display: flex;
+    justify-content: space-between;
+    font-weight: bold;
+    color: gray;
+  }
+
+  .desc {
+    margin-top: 1.5em;
+  }
+}
+
+.col-3 {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(20em, 1fr));
+  gap: 1em;
+}
+
+@container (min-width: 65em) {
+  .card {
+    display: flex;
+    flex: 1 1 0px;
+  }
+
+  img {
+    object-fit: cover;
+    width: 200px;
+  }
+
+  img, .content {
+    flex-grow: 1;
+    flex-basis: 0;
+  }
+}
