@@ -80,7 +80,8 @@ function render(grid) {
       ctx.beginPath();
       ctx.rect(col * resolution, row * resolution, resolution, resolution);
       ctx.fillStyle = cell ? 'black' : 'white';
-      ctx.fill(); // ctx.stroke()
+      ctx.fill();
+      ctx.stroke();
     }
   }
 } // render(grid)

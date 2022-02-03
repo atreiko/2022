@@ -67,7 +67,7 @@ function render(grid) {
       ctx.rect(col * resolution, row * resolution, resolution, resolution)
       ctx.fillStyle = cell ? 'black' : 'white'
       ctx.fill()
-      // ctx.stroke()
+      ctx.stroke()
     }
   }
 }
@@ -75,4 +75,4 @@ function render(grid) {
 // render(grid)
 console.log(
   // grid
-);
+)
