@@ -42,7 +42,7 @@ function getDomainAndPath(str) {
     let endSlice = str.slice(-1) === '/' ? str.length - 1 : str.length
     let title = null;
   
-    const gluedSymbols = [...twoSymbols, ...threeSymbols, ...fourSymbols]
+    const gluedSymbols = [ ...twoSymbols, ...threeSymbols, ...fourSymbols ]
   
     for (let i = 0; i < gluedSymbols.length; i++) {
       if (str.includes(gluedSymbols[i])) {
