@@ -1,0 +1,68 @@
+.file {
+  &__uploader {
+    display: flex;
+    gap: 40px;
+    max-width: 1220px;
+    width: 100%;
+    margin: 40px;
+  }
+  &__uploader-item {
+    &:first-child {
+      flex: 0 1 360px;
+    }
+    &:last-child {
+      flex: 1 1 auto;
+    }
+  }
+  &__label {
+    display: flex;
+    height: 360px;
+    width: 360px;
+    position: relative;
+    background: #f3f6f9;
+    border: 2px dashed $gray;
+    cursor: pointer;
+    position: relative;
+  }
+  &__input {
+    display: none;
+  }
+  &__item {
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+  &__item-img {}
+  &__item-text {
+    font-style: normal;
+    font-weight: 500;
+    font-size: 20px;
+    line-height: 22px;
+    color: $gray;
+    margin-top: 30px;
+  }
+}
+
+.profile {
+  &__inputs {
+    margin-top: 17px;
+  }
+  &__input {
+    width: 100%;
+    max-width: 100%;
+    display: flex;
+    margin-top: 10px;
+    .input {
+      display: flex;
+      width: 100%;
+      svg {
+        line-height: 16px;
+      }
+    }
+  }
+}
+

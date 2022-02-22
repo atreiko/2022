@@ -1,0 +1,51 @@
+.interests {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+
+}
+
+.interest {
+  display: flex;
+  column-gap: 10px;
+  &__item {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 15px 24px;
+    background: $white;
+    border: 1px solid $lightgray;
+    margin-top: 20px;
+    max-width: max-content;
+    cursor: pointer;
+    position: relative;
+  }
+  &__checkbox {
+    display: none;
+
+    &:checked ~ .interest__text {
+      color: $blue;
+    }
+
+    &:checked ~ .interest__border {
+      opacity: 1;
+    }
+  }
+  &__text {
+    font-weight: 500;
+    font-style: normal;
+    line-height: 20px;
+    color: $gray;
+  }
+
+  &__border {
+    position: absolute;
+    left: 0;
+    right: 0;
+    top: 0;
+    bottom: 0;
+    border: 1px solid $blue;
+    opacity: 0;
+  }
+
+}

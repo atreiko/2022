@@ -1,0 +1,113 @@
+@import 'variables';
+// Container 
+// .container {
+//   max-width: ($containerWidth + $containerPadding) + px;
+//   width: 100%;
+//   margin: 0 auto;
+//   padding: 0 $containerSidePadding + px;
+
+//   @media (max-width: $breakPoint1450) {
+//     max-width: 1200px;
+//   }
+
+//   @media (max-width: $breakPoint992) {
+//     max-width: 970px;
+//   }
+
+//   @media (max-width: $breakPoint768) {
+//     max-width: 740px;
+//   }
+
+//   @media (max-width: $breakPoint480) {
+//     max-width: none;
+//   }
+// }
+
+.logo {
+  display: flex;
+  align-items: center;
+  width: 24px;
+  font-size: 24px;
+  text-decoration: none;
+  color: $blue;
+  font-weight: 500;
+  margin-right: 1rem;
+  & img {
+    
+  }
+}
+
+.section {
+  // .section__title
+  &__title {
+    font-style: normal;
+    font-weight: 500;
+    font-size: 50px;
+    line-height: 56px;
+    color: $blue;
+  }
+  // .section__text
+  &__text {
+    font-style: normal;
+    font-weight: 400;
+    font-size: 20px;
+    line-height: 22px;
+    color: $gray;
+    max-width: 600px;
+  }
+}
+
+.btn {
+  background: $red;
+  padding: 18px 48px;
+  display: inline-flex;
+  align-items: center;
+  gap: 40px;
+  color: $white;
+  text-decoration: none;
+  font-weight: 500;
+  line-height: 24px;
+  font-size: 22px;
+  max-width: fit-content;
+  border: 1px solid transparent;
+
+  svg {
+    transition: all .3s ease;
+  }
+
+  &:hover {
+    background-color: rgb(241, 168, 183);
+    transition: all .3s ease;
+
+    svg {
+      transform: translate(10px);
+    }
+  }
+}
+
+.btn__outline {
+  padding: 18px 48px;
+  border: 1px solid $lightgray;
+  font-style: normal;
+  font-weight: 500;
+  font-size: 22px;
+  line-height: 24px;
+  color: $blue;
+  background: $white;
+
+  &:hover {
+    background-color: $blue;
+    color: $white;
+    transition: all .3s ease;
+
+    svg {
+      transform: translate(10px);
+    }
+  }
+}
+
+main {
+  padding: 50px 200px;
+}
+
+

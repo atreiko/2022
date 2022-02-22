@@ -1,0 +1,70 @@
+.checkboxes {
+  display: flex;
+  gap: 20px;
+  flex-wrap: wrap;
+  margin-top: 20px;
+}
+
+.checkbox {
+  &__item {
+    display: flex;
+    max-width: 360px;
+    width: 100%;
+    padding: 20px;
+    background: $lightgray;
+    align-items: center;
+    position: relative;
+
+    .text {
+      font-style: normal;
+      font-weight: 500;
+      font-size: 20px;
+      line-height: 22px;
+      margin-left: 30px;
+      color: $blue;
+    }
+    .fake {
+      width: 30px;
+      height: 30px;
+      border: 1px solid #d4d4d3;
+      background: #fff;
+      border-radius: 5px;
+      margin-left: auto;
+      position: relative;
+      &::after {
+        content: '';
+        position: absolute;
+        right: 0;
+        left: 0;
+        top: 0;
+        bottom: 0;
+        background: $red url('../svgicons/mark.svg') no-repeat;
+        background-position: center;
+        border-radius: 5px;  
+        opacity: 0;
+      }
+    }
+    .border {
+      position: absolute;
+      left: 0;
+      right: 0;
+      top: 0;
+      bottom: 0;
+      border: 1px solid $red;
+      opacity: 0;
+    }
+  }
+  &__input {
+    display: none;
+
+    &:checked ~ .fake::after {
+      opacity: 1;
+    }
+
+    &:checked ~ .border {
+      opacity: 1;
+    }
+    
+  }
+}
+
