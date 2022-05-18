@@ -16,7 +16,6 @@ app
         customerReducer.js
       index.js
 ```
-
 ---
 
 ```js
