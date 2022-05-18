@@ -11,13 +11,19 @@ app
     index.js
     App.js
     store
+      actions
+        cash.actions.js
+        customer.actions.js
+      constants
+        cash.constants.js
+        customer.constants.js
       reducers
-        cashReducer.js
-        customerReducer.js
+        cash.reducer.js
+        customer.reducer.js
       index.js
+
 ```
 ---
-
 ```js
 src/index.js
 
@@ -39,7 +45,7 @@ import { cashReducer } from './reducers/cashReducer'
 const store = createStore(cashReducer)
 ```
 
-> Если в проекте две и более функций reducer - использовать combineReducers,
+> Если в проекте две и более функции reducer - использовать combineReducers,
 > который принимает в себя объект с ссылками на эти ф-ции
 ```js
 src/store/index.js 
@@ -56,6 +62,13 @@ const rootReducer = combineReducers({
 export const store = createStore(rootReducer)
 ```
 
+
+## CASH 
+
+1. Создать initialState
+2. Создать ф-цию reducer, которая принимает state, action
+3. Прописываем actions в switch case
+4. Всегда разворачиваем в state новый payload
 ```js
 src/store/reducers/cashReducer.js
 
@@ -75,7 +88,10 @@ export const cashReducer = (state = initialState, action) => {
 }
 ```
 
-> state.cash.cash  <- достаем cashReducer из поля "cash" в rootReducer
+1. state.cash.cash  <- достаем cashReducer из поля "cash" в rootReducer
+2. Пишем ф-ции, которые диспатчат action и payload
+3. Прикручиваем к кнокам ф-ции
+4. Инициализирую состояние cash в рендере
 ```js
 src/App.js
 
@@ -95,11 +111,9 @@ function App() {
 
   return (
     <div>
-      <div>
-        <button onClick={() => addCash()}>Add cash</button>
-        {cash}
-        <button onClick={() => getCash()}>Get cash</button>
-      </div>
+      <button onClick={() => addCash()}>Add cash</button>
+      {cash}
+      <button onClick={() => getCash()}>Get cash</button>
     </div>
   );
 }
