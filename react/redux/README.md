@@ -38,7 +38,8 @@ import { cashReducer } from './reducers/cashReducer'
 const store = createStore(cashReducer)
 ```
 
-> Если в проекте две и более функций reducer - использовать combineReducers
+> Если в проекте две и более функций reducer - использовать combineReducers,
+> который принимает в себя объект с ссылками на эти ф-ции
 ```js
 src/store/index.js 
 
@@ -48,12 +49,11 @@ import { customerReducer } from './reducers/customerReducer'
 
 const rootReducer = combineReducers({
   cash: cashReducer,
-  customers: customerReducer
+  customer: customerReducer
 })
 
 export const store = createStore(rootReducer)
 ```
-
 
 ```js
 src/store/reducers/cashReducer.js
@@ -72,4 +72,51 @@ export const cashReducer = (state = initialState, action) => {
       return state
   }
 }
+```
+
+> state.cash.cash  <- достаем cashReducer из поля "cash" в rootReducer
+```js
+src/App.js
+
+import { useDispatch, useSelector } from 'react-redux';
+
+function App() {
+  const dispatch = useDispatch()
+  const cash = useSelector(state => state.cash.cash)
+
+  const addCash = () => {
+    dispatch({ type: 'ADD_CASH', payload: 5 })
+  }
+
+  const getCash = () => {
+    dispatch({ type: 'GET_CASH', payload: 5 })
+  }
+
+  return (
+    <div>
+      <div>
+        <button onClick={() => addCash()}>Add cash</button>
+        {cash}
+        <button onClick={() => getCash()}>Get cash</button>
+      </div>
+    </div>
+  );
+}
+```
+
+> Для того, чтоб удобно отслеживать состояние компонентов - установить инструменты разработчика
+`npm i redux-devtools-extension`
+
+> Добавляем вторым параметром composeWithDevTools в createStore и вызываем ее
+```js
+src/store/index.js
+
+import { composeWithDevTools } from 'redux-devtools-extension'
+
+const rootReducer = combineReducers({
+  cash: cashReducer,
+  customer: customerReducer
+})
+
+export const store = createStore(rootReducer, composeWithDevTools())
 ```
