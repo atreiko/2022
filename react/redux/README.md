@@ -17,6 +17,8 @@ app
       index.js
 ```
 
+---
+
 ```js
 src/index.js
 
@@ -121,4 +123,9 @@ const rootReducer = combineReducers({
 })
 
 export const store = createStore(rootReducer, composeWithDevTools())
+```
+
+> Устанавливаем для браузера Redux DevTools
+```
+https://chrome.google.com/webstore/detail/redux-devtools/lmhkpmbekcpmknklioeibfkpmmfibljd?hl=ru
 ```
