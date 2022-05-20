@@ -1,7 +1,7 @@
 import { ADD_CASH, GET_CASH } from '../constants/cash.constants'
 
 const initialState = {
-  cash: 0
+  cash: 5
 }
 
 export const cashReducer = (state = initialState, action) => {

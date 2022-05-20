@@ -45,7 +45,7 @@ import { cashReducer } from './reducers/cashReducer'
 const store = createStore(cashReducer)
 ```
 
-> Если в проекте две и более функции reducer - использовать combineReducers,
+> Если в проекте две и более функций reducer - использовать combineReducers,
 > который принимает в себя объект с ссылками на эти ф-ции
 ```js
 src/store/index.js 
@@ -62,8 +62,9 @@ const rootReducer = combineReducers({
 export const store = createStore(rootReducer)
 ```
 
+---
 
-## CASH 
+## CASH работа с объектом
 
 1. Создать initialState
 2. Создать ф-цию reducer, которая принимает state, action
@@ -102,11 +103,11 @@ function App() {
   const cash = useSelector(state => state.cash.cash)
 
   const addCash = () => {
-    dispatch({ type: 'ADD_CASH', payload: 5 })
+    dispatch({ type: 'ADD_CASH', payload: cash })
   }
 
   const getCash = () => {
-    dispatch({ type: 'GET_CASH', payload: 5 })
+    dispatch({ type: 'GET_CASH', payload: cash })
   }
 
   return (
@@ -119,12 +120,12 @@ function App() {
 }
 ```
 
-> Для того, чтоб удобно отслеживать состояние компонентов - установить инструменты разработчика
+Для того, чтоб удобно отслеживать состояние компонентов - установить инструменты разработчика
 ```
 npm i redux-devtools-extension
 ```
 
-> Добавляем вторым параметром composeWithDevTools в createStore и вызываем ее
+> Добавляем вторым параметром ф-ию composeWithDevTools в createStore и вызываем ее
 ```js
 src/store/index.js
 
@@ -138,7 +139,155 @@ const rootReducer = combineReducers({
 export const store = createStore(rootReducer, composeWithDevTools())
 ```
 
-> Устанавливаем для браузера Redux DevTools
+Устанавливаем для браузера Redux DevTools
 ```
 https://chrome.google.com/webstore/detail/redux-devtools/lmhkpmbekcpmknklioeibfkpmmfibljd?hl=ru
+```
+
+Создаем constants для types
+```js
+src/store/constants/cash.constants.js
+
+export const ADD_CASH = 'ADD_CASH'
+export const GET_CASH = 'GET_CASH'
+```
+
+Создаем actions
+1. Импортируем константы
+2. Ф-ии принимают payload и возвращают объект type и payload
+```js
+src/store/actions/cash.actions.js
+
+import { ADD_CASH, GET_CASH } from '../constants/cash.constants'
+
+export const addCashAction = payload => ({
+  type: ADD_CASH,
+  payload
+})
+
+export const getCashAction = payload => ({
+  type: GET_CASH,
+  payload
+})
+```
+
+Прокидываем actions в discpatch
+```js
+src/App.js
+import { addCashAction, getCashAction } from './store/actions/cash.actions';
+
+const addCash = () => {
+  dispatch(addCashAction(cash))
+}
+
+const getCash = () => {
+  dispatch(getCashAction(cash))
+}
+```
+
+---
+
+## CUSTOMERS работа с массивом
+
+1. Создаем initialState
+2. Создаем ф-цию reducer, которая принимает state, action
+3. Прописываем actions в switch case
+4. Всегда разворачиваем в state новый payload
+5. Фильтруем по ID, которое принимаем в payload для удаления
+```js
+src/store/reducers/customerReducer.js
+
+const initialState = {
+  customers: []
+}
+
+export const customerReducer = (state = initialState, action) => {
+  switch (action.type) {
+    case ADD_CUSTOMER:
+      return {...state, customers: [...state.customers, action.payload]}
+    case REMOVE_CUSTOMER:
+      return {...state, customers: state.customers.filter(customer => customer.id !== action.payload)}
+    default: 
+      return state
+  }
+}
+```
+
+1. Читаем состояние через useSelector
+2. Ф-ция создать customer, которая аргументом принимает name
+3. Ф-ция удалить, которая принимает в себя customer.id
+4. Рендерим и вешаем ф-ии
+```js
+src/App.js
+
+import { useDispatch, useSelector } from 'react-redux';
+
+const dispatch = useDispatch()
+const customers = useSelector(state => state.customer.customers)
+
+const addCustomer = name => {
+  const customer = {
+    id: Date.now(),
+    name
+  }
+  dispatch({ type: 'ADD_CUSTOMER', payload: customer })
+}
+
+const removeCustomer = customer => {
+  dispatch({ type: 'REMOVE_CUSTOMER', payload: customer.id })
+}
+
+<>
+  <div>
+    <button onClick={() => addCustomer(prompt())}>Add customer</button>
+  </div>
+  {
+    customers.length > 0 ?
+    <div>
+      {
+        customers?.map(customer => (
+          <div onClick={() => removeCustomer(customer)} key={customer.id}>
+            {customer.name}
+          </div>
+        ))
+      }
+    </div>
+    : 
+    <div>
+      There are no customers
+    </div>
+  }
+  </div>
+</>
+```
+
+```js
+src/store/actions/customer.actions.js
+
+export const addCustomerAction = payload => ({
+  type: ADD_CUSTOMER,
+  payload
+})
+
+export const removeCustomerAction = payload => ({
+  type: REMOVE_CUSTOMER,
+  payload
+})
+```
+
+Вставляем наши actions в dispatch
+```js
+src/App.js
+
+const addCustomer = name => {
+  const customer = {
+    id: Date.now(),
+    name
+  }
+  dispatch(addCustomerAction(customer))
+}
+
+const removeCustomer = customer => {
+  dispatch(removeCustomer(customer.id))
+}
 ```
