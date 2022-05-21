@@ -21,7 +21,6 @@ app
         cash.reducer.js
         customer.reducer.js
       index.js
-
 ```
 ---
 ```js
@@ -56,7 +55,7 @@ import { customerReducer } from './reducers/customerReducer'
 
 const rootReducer = combineReducers({
   cash: cashReducer,
-  customer: customerReducer
+  customers: customerReducer
 })
 
 export const store = createStore(rootReducer)
@@ -125,7 +124,7 @@ function App() {
 npm i redux-devtools-extension
 ```
 
-> Добавляем вторым параметром ф-ию composeWithDevTools в createStore и вызываем ее
+Добавляем вторым параметром ф-ию composeWithDevTools в createStore и вызываем ее
 ```js
 src/store/index.js
 
@@ -133,7 +132,7 @@ import { composeWithDevTools } from 'redux-devtools-extension'
 
 const rootReducer = combineReducers({
   cash: cashReducer,
-  customer: customerReducer
+  customers: customerReducer
 })
 
 export const store = createStore(rootReducer, composeWithDevTools())
@@ -223,7 +222,7 @@ src/App.js
 import { useDispatch, useSelector } from 'react-redux';
 
 const dispatch = useDispatch()
-const customers = useSelector(state => state.customer.customers)
+const customers = useSelector(state => state.customers.customers)
 
 const addCustomer = name => {
   const customer = {
@@ -290,4 +289,106 @@ const addCustomer = name => {
 const removeCustomer = customer => {
   dispatch(removeCustomer(customer.id))
 }
+```
+
+---
+
+## fetch CUSTOMERS. THUNK middleware 
+
+`npm i redux-thunk`
+
+1. Импортировать applyMiddleware, thunk
+2. Прокидываем applyMiddleware(thunk) в composeWithDevTools()
+```js
+src/store/index.js
+
+import { createStore, combineReducers, applyMiddleware } from 'redux'
+import thunk from 'redux-thunk'
+
+export const store = createStore(rootReducer, composeWithDevTools(applyMiddleware(thunk)))
+```
+
+Для получение customers: `https://jsonplaceholder.typicode.com/users`
+
+```js
+src/store/constants/customer.constants.js
+
+export const ADD_MANY_CUSTOMERS = 'ADD_MANY_CUSTOMERS'
+```
+
+```js
+src/store/reducers/customer.reducer.js
+
+case ADD_MANY_CUSTOMERS: 
+  return {...state, customers: [...state.customers, ...action.payload]}
+```
+
+```js
+src/store/actions/customer.action.js
+
+export const addManyCustomersAction = payload => ({
+  type: ADD_MANY_CUSTOMERS,
+  payload
+})
+```
+
+Создаем папку asyncActions в src
+```
+app
+  src
+    index.js
+    App.js
+    store
+    asyncActions
+      customers.js
+```
+
+1. Ипортируем addManyCustomersAction
+2. Ф-я, возвращает ф-ю, которая принимает в себя dispatch
+3. Получаем список
+4. В dispatch прокидываем наш action, который принимает в себя результат запроса
+```js
+src/asyncActions/customers.js
+
+import { addManyCustomersAction } from '../store/actions/customer.actions'
+
+export const fetchCustomers = () => {
+  return function(dispatch) {
+    fetch('https://jsonplaceholder.typicode.com/users')
+      .then(response => response.json())
+      .then(json => dispatch(addManyCustomersAction(json)))
+  }
+}
+```
+
+1. Импортируем fetchCustomers
+2. Вешаем на нажатие книпки dispatch, который принимает в себя fetchCustomers
+3. Рендерим customers: []
+```js
+src/App.js
+
+import { fetchCustomers } from './asyncActions/customers';
+
+<>
+  <div>
+    <button onClick={() => dispatch(fetchCustomers())}>Add many customers</button>
+  </div>
+  {
+    customers.length > 0 ?
+    <div>
+      {
+        customers?.map(customer => (
+          <div onClick={() => removeCustomer(customer)} key={customer.id}>
+            {customer.name}
+          </div>
+        ))
+      }
+    </div>
+    : 
+    <div>
+      There are no customers
+    </div>
+  }
+  </div>
+</>
 ```
