@@ -1,0 +1,10 @@
+.nav {
+  display: flex;
+  justify-content: center;
+}
+
+.link {
+  margin: 0 .5rem;
+}
+
+

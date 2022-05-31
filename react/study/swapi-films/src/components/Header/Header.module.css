@@ -1,0 +1,22 @@
+.header {
+  padding: 0 3rem;
+
+}
+
+.menu {
+  display: flex;
+  justify-content: flex-end;
+}
+
+.menu li {
+  padding: 1rem .5rem;
+}
+
+.menu li a {
+  color: #fff;
+  font-size: 1.5rem;
+}
+
+.menu li :global(a.active) {
+  color: gold;
+} 
