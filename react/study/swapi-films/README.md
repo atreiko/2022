@@ -256,10 +256,10 @@ swapi-films/src/components/Header/Header.jsx
 
 ## Pagination 
 
-Наш response имеет next и previous. Берем из response и сеттим prevPage, nextPage
-Получаем номер сраницы запроса из useQueryParams() и добавляем к пути API_PEOPLE + queryPage для получения данных.
-setCurrentPage - принимает в себя ф-ю, которая отдает id страницы people от url.
-Рендерим навигацию и передаем нужные аргументы
+1. Наш response имеет next и previous. Берем из response и сеттим prevPage, nextPage.
+2. Получаем номер сраницы запроса из useQueryParams() и добавляем к пути API_PEOPLE + queryPage для получения данных.
+3. setCurrentPage - принимает в себя ф-ю, которая отдает id страницы people от url.
+4. Рендерим навигацию и передаем нужные аргументы.
 ```js
 swapi-films/src/pages/PeoplePage/PeoplePage.jsx
 
@@ -304,10 +304,10 @@ return (
 )
 ```
 
-Событие handleChange делает запрос url следующей и предыдущей страницы с помощью ф-ии getResource.
-Link переключает страницы
-Несуществующие страницы возвращают null. Если false - дизейблим кнопку
-Стили на <button className='btn'> disabled: `.btn:disabled {...}`
+1. Событие handleChange делает запрос url следующей и предыдущей страницы с помощью ф-ии getResource.
+2. Link переключает страницы.
+3. Несуществующие страницы возвращают null. Если false - дизейблим кнопку.
+4. Стили на <button className='btn'> disabled: `.btn:disabled {...}`
 ```js
 swapi-films/src/components/PeopleNavigation/PeopleNavigation.jsx
 
@@ -340,8 +340,8 @@ const handleChangeNext = () => getResource(nextPage)
   )
 ```
 
-Выносим кнопку в отдельный компонент и принимаем пропсы
-classes - для того, чтоб добавить дополнительные стили или перетереть старые. Расположить последним. 
+1. Выносим кнопку в отдельный компонент и принимаем пропсы.
+2. classes - для того, чтоб добавить дополнительные стили или перетереть старые. Расположить последним. 
 * UI/index.css - переменные для темы
 ```js
 swapi-films/src/components/UI/UiButton.jsx
@@ -358,7 +358,7 @@ const UiButton = ({ text, disabled, onClick, theme='dark', classes }) =>
   )
 ```
 
-Передаем кнопкам пропсы
+Передаем кнопкам пропсы.
 className={styles.test} <- дополнительные стили(classes)
 ```js
 swapi-films/src/components/PeopleNavigation/PeopleNavigation.jsx
@@ -406,12 +406,12 @@ import PersonPage from '../pages/PersonPage/PersonPage';
 },
 ```
 
-HOC оборачивает PersonPage
-Пропсом получаем setErrorApi
-В useEffect получаем response по роуту https://swapi.py4e.com/api/people/ID/
-Если response=true сеттим массив объектов с нужными данными и отдельно имя(заголовок)
-Иначе рендерим компонент ошибки
-При рендере делаем проверку на data, так как объект может не содержать нужных нам полей
+1. HOC оборачивает PersonPage.
+2. Пропсом получаем setErrorApi.
+3. В useEffect получаем response по роуту https://swapi.py4e.com/api/people/ID/ .
+4. Если response=true сеттим массив объектов с нужными данными и отдельно имя(заголовок).
+5. Иначе рендерим компонент ошибки.
+6. При рендере делаем проверку на data, так как объект может не содержать нужных нам полей.
 ```js
 swapi-films/src/pages/PersonPage/PersonPage.jsx
 
