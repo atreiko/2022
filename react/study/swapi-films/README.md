@@ -1,4 +1,4 @@
-# REDUX - Star Wars API
+# Star Wars API
 API: `https://swapi.py4e.com/`
 
 ---
@@ -460,4 +460,138 @@ const PersonPage = ({ setErrorApi }) => {
     </div>
   )
 }
+
+export default withErrorApi(PersonPage)
+```
+
+Декомпозиция PersonInfo
+```js
+swapi-films/src/pages/PersonPage/PersonPage.jsx
+
+{personInfo && <PersonInfo personInfo={personInfo} />}
+```
+
+---
+
+## Go Back button (person link back)
+
+```js
+swapi-films/src/components/PersonLinkBack/PersonLinkBack.jsx
+
+import { useNavigate } from 'react-router-dom'
+
+const PersonLinkBack = () => {
+  const navigate = useNavigate()
+
+  const handleGoBack = e => {
+    e.preventDefault()
+    navigate(-1)
+  }
+
+  return (
+    <div>
+      <Link 
+        to='#' 
+        onClick={handleGoBack}
+      >
+        <img src={goBack} alt='goBack' />
+        <span>Go Back</span>
+      </Link>
+    </div>
+  )
+}
+```
+
+---
+
+## Promise.all() 
+
+1. res.films - содержит массив из url с фильмами. На каждый из которых нужно сделать запрос:
+`['https://swapi.py4e.com/api/films/5/', 'https://swapi.py4e.com/api/films/6/']`
+2. Сеттим данные, прокидываем в PersonFilms
+```js
+swapi-films/src/pages/PersonPage/PersonPage.jsx
+
+const [ personFilms, setPersonFilms ] = useState(null)
+
+if (res) {..
+  res.films.length && setPersonFilms(res.films)
+} else ..
+
+return (
+  <>
+    {personFilms && <PersonFilms personFilms={personFilms} />}
+  </>
+)
+```
+
+Ф-ция принимает в себя массив с урлами.
+Возвращает результат запроса к каждому. 
+```js
+swapi-films/src/utils/network.js
+
+export const makeConcurrentRequest = async url => {
+  const res = await Promise.all(url.map(res => {
+    return fetch(res).then(res => res.json())
+  }))
+return res
+}
+```
+
+Создаем state для названий
+Получаем результат запроса на каждый url
+```js
+swapi-films/src/components/PersonFilms/PersonFilms.jsx
+
+const PersonFilms = ({ personFilms }) => {
+  const [ filmsName, setFilmsName ] = useState([])
+
+  useEffect(() => {
+    (async () => {
+      const response = await makeConcurrentRequest(personFilms)
+      setFilmsName(response)
+    })()
+  }, [])
+
+  return (
+    <div>
+      <ul>
+        {filmsName.map(({ title, episode_id}) => (
+          <li key={episode_id}>
+            <span>Episode {episode_id}</span>
+            <span> : </span>
+            <span>{title}</span>
+          </li>
+        ))}
+      </ul>
+    </div>
+  )
+}
+```
+
+--- 
+
+## React.lazy(), Suspense (Ленивая загрузка)
+На PersonPage есть два компонента, которые делают запросы.
+Фильмы - менее приоритетная информация и мы ее подгружаем после загрузки основного контента PersonInfo
+1. Удаляем классический импорт
+2. Добавляем lazy импорт
+3. Импортим Suspense 
+4. fallback принимает в себя компонент загрузки
+```js
+swapi-films/src/pages/PersonPage/PersonPage.jsx
+
+import React, { Suspense } from 'react'
+//! delete import { PersonFilms } from '../../components';
+const PersonFilms = React.lazy(() => import('../../components/PersonFilms/PersonFilms'))
+
+return (
+  <>
+    {personFilms && (
+      <Suspense fallback={<UiLoading />}>
+        <PersonFilms personFilms={personFilms} />
+      </Suspense>
+    )}
+  </>
+)
 ```

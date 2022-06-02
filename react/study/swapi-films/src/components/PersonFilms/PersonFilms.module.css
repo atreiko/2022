@@ -1,0 +1,11 @@
+.title {
+  color: var(--color-white);
+  padding: 0.5rem 0;
+}
+.list li {
+  padding: .5rem 0;
+}
+
+.list li span {
+  color: var(--color-white);
+}

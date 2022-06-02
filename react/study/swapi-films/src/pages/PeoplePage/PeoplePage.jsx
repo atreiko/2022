@@ -17,8 +17,6 @@ const PeoplePage = ({ setErrorApi }) => {
   const query = useQueryParams()
   const queryPage = query.get('page') 
 
-  console.log(queryPage);
-
   useEffect(() => {
     getResource(API_PEOPLE + queryPage)
   }, [queryPage])

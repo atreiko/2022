@@ -1,0 +1,14 @@
+.wrapper {
+  padding: 0 3rem;
+}
+
+.title {
+  padding: 1rem 0;
+  color: var(--color-white);
+  letter-spacing: .1rem;
+}
+
+.info {
+  display: flex;
+  gap: 3rem;
+}
