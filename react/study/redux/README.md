@@ -119,7 +119,7 @@ function App() {
 }
 ```
 
-Для того, чтоб удобно отслеживать состояние компонентов - установить инструменты разработчика
+Для того, чтоб было удобно отслеживать состояние компонентов - установить инструменты разработчика
 ```
 npm i redux-devtools-extension
 ```
@@ -170,7 +170,8 @@ export const getCashAction = payload => ({
 })
 ```
 
-Прокидываем actions в discpatch
+1. Прокидываем actions в discpatch
+2. cash - payload
 ```js
 src/App.js
 import { addCashAction, getCashAction } from './store/actions/cash.actions';
