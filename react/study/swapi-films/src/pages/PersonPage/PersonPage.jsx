@@ -42,7 +42,6 @@ const PersonPage = ({ setErrorApi }) => {
   return (
     <>
       <PersonLinkBack />
-      <UiLoading />
       <div className={styles.wrapper}>
         <h2 className={styles.title}>{personName}</h2>
         <div className={styles.info}>
