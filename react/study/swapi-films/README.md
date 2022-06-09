@@ -572,7 +572,8 @@ const PersonFilms = ({ personFilms }) => {
 --- 
 
 ## React.lazy(), Suspense (Ленивая загрузка)
-На PersonPage есть два компонента, которые делают запросы.
+
+В PersonPage есть два компонента, которые делают запросы.
 Фильмы - менее приоритетная информация и мы ее подгружаем после загрузки основного контента PersonInfo
 1. Удаляем классический импорт
 2. Добавляем lazy импорт
@@ -594,4 +595,554 @@ return (
     )}
   </>
 )
+```
+
+---
+
+## REDUX (Favorites)
+
+`npm i react-redux @reduxjs/toolkit`
+
+1. Импорт Provider, оборачиваем App
+2. Импорт store, прокидываем в Provider
+3. Создаем структуру файлов в src/store
+4. Создаем FavoritesPage
+```js
+store
+  actions
+  constants
+    favorites.constants.js
+  reducers
+    favoritesReducer.js
+  index.js
+```
+
+```js
+src/store/constants/favorites.constants.js
+
+export const ADD_TO_FAVORITES = 'ADD_TO_FAVORITES'
+export const REMOVE_FROM_FAVORITES = 'REMOVE_FROM_FAVORITES'
+```
+
+_.omit(obj, [key1, key2]) - удаляет ключи, объекта, которые мы передаем в массив
+```js
+src/store/reducers/favoritesReducer.js
+
+import { omit } from 'lodash'
+
+const initialState = {
+  favorites: {}
+}
+
+export const favoritesReducer = (state = initialState, action) => {
+  switch (action.type) {
+    case ADD_TO_FAVORITES:
+      return { ...state, favorites: { ...state.favorites, ...action.payload }}
+    case REMOVE_FROM_FAVORITES:
+      return { favorites: omit(state.favorites, [action.payload]) }
+    default: return state
+  }
+}
+```
+
+```js
+src/store/index.js
+
+import { createStore } from 'redux'
+import { favoritesReducer } from './reducers/favoritesReducer'
+
+export const store = createStore(favoritesReducer)
+```
+
+Читаем данные из store и отображаем их
+```js
+src/pages/FavoritesPage/FavoritesPage.jsx
+
+const FavoritesPage = () => {
+  const favorites = useSelector(store => store.favorites)
+```
+
+PersonTitle будет получать фунционал добавления в Favorites и удаление.
+В этом компоненте будут ф-ии обработчика событий add и remove.
+Обработчики событий диспатчат actions. addPersonToFavorite принимает в себя payload в
+виде объекта. 
+```js
+src/components/PersonTitle/PersonTitle.jsx
+
+import { 
+  addPersonToFavorite, 
+  removePersonFromFavorite 
+} from '../../store/actions/favorites.actions'
+
+const PersonTitle = ({ personName, personId }) =>
+
+const dispatch = useDispatch()
+
+const add = () => {
+  dispatch(addPersonToFavorite({
+      [personId]: {
+        name: personName
+      } 
+    }))
+} 
+const remove = () => {
+  dispatch(removePersonFromFavorite(personId))
+}
+
+return (
+  <>
+    <button onClick={add} className={styles.btn}>Add to favorites</button>
+    <button onClick={remove} className={styles.btn}>Remove from favorites</button>
+  </>
+)
+```
+
+---
+
+### redux-devtools-extesion, applyMiddleware, thunk
+```js
+swapi-films/src/store/index.js
+
+import { createStore, applyMiddleware } from 'redux'
+import { favoritesReducer } from './reducers/favorites.reducer'
+import { composeWithDevTools } from 'redux-devtools-extension'
+import thunk from 'redux-thunk'
+
+export const store = createStore(
+  favoritesReducer,
+  composeWithDevTools(applyMiddleware(thunk))
+)
+```
+
+## Favotite Toggle на карточке 
+
+1. Создаем useState(false)
+2. Читаем состояние наших state.favorites
+3. В useEffect указываем, если объект с таким свойством(id в нашем варианте) присутсвует в favorites,
+  тогда true, иначе false
+4. Прокидываем в PersonTitle -> personFavorite, setPersonFavorite
+```js
+swapi-films/src/pages/PersonPage/PersonPage.jsx
+
+const PersonPage = ({ setErrorApi }) => {
+
+const [ personFavorite, setPersonFavorite ] = useState(false)
+
+const { id } = useParams()
+const favorites = useSelector(state => state.favorites)
+
+useEffect(() => {
+  (async () => {
+    const res = await getApiResource(`${API_PERSON}/${id}/`)
+    
+    favorites[id] ? setPersonFavorite(true) : setPersonFavorite(false)
+..
+  return (
+    <>
+      <PersonTitle
+        personName={personName} 
+        personId={personId} 
+        personFavorite={personFavorite}
+        setPersonFavorite={setPersonFavorite}
+      /> 
+    </>
+  )
+```
+
+Реализация с кнопкой удаления и добавления
+1. Приняли пропсы personFavorite, setPersonFavorite 
+2. После диспатча меняем состояние personFavorite
+3. Рендерим кнопки по условию
+```js
+swapi-films/src/components/PersonTitle/PersonTitle.jsx
+
+const PersonTitle = ({ 
+  personName, personId, personFavorite, setPersonFavorite 
+}) => {
+
+  const add = () => {
+    dispatch(addPersonToFavorite({
+      [personId]: {
+        name: personName
+      } 
+    }))
+    setPersonFavorite(true) // <---
+  }
+
+  const remove = () => {
+    dispatch(removePersonFromFavorite(personId))
+    setPersonFavorite(false) // <---
+  }
+
+{personFavorite 
+  ? <button onClick={remove} className={styles.btn}>Remove from favorites</button>
+  : <button onClick={add} className={styles.btn}>Add to favorites</button>
+}
+```
+Реализация с одной кнопкой 
+```js
+swapi-films/src/components/PersonTitle/PersonTitle.jsx
+
+const toggleFavoritePeople = () => {
+  if (personFavorite) {
+    dispatch(removePersonFromFavorite(personId))
+    setPersonFavorite(false)
+  } else {
+    dispatch(addPersonToFavorite({
+      [personId]: {
+        name: personName
+      } 
+    }))
+    setPersonFavorite(true)
+  }
+}
+// Кнопка
+return (
+  <>
+    <button className={styles.btn} onClick={toggleFavoritePeople}>
+      {personFavorite ? 'Remove from favorites' : 'Add to favorites'}
+    </button>
+  </>
+)
+// ------------------------------------------------------------
+// svg
+return (
+  <>
+    {<FavoriteIcon fill={personFavorite} onClick={toggleFavoritePeople} />}
+  </>
+)
+```
+0
+Компонент FavoriteIcon
+```js
+src/assets/FavoriteIcon.jsx
+const FavoriteIcon = ({ fill, onClick }) => {
+
+  return (
+    <svg 
+      version="1.1" 
+      id="Layer_1" 
+      x="0px" 
+      y="0px"
+      viewBox="0 0 482.207 482.207" 
+      onClick={onClick}
+      width="18px"
+    >
+      <path 
+        d="M482.207,186.973l-159.699-33.705L241.104,11.803l-81.404,141.465L0,186.973l109.388,121.134L92.094,470.404l149.01-66.6l149.01,66.6l-17.294-162.296L482.207,186.973z M241.104,370.943l-113.654,50.798l13.191-123.788l-83.433-92.393l121.807-25.707l62.09-107.9l62.09,107.9L425,205.561l-83.433,92.393l13.191,123.788L241.104,370.943z"
+        stroke="#000"
+        fill={fill ? '#f00' : '#fff'}
+      />
+    </svg>
+  )
+}
+```
+
+---
+
+## Отображение количества элементов на корзине
+
+1. useState(0) -> отображаем count
+2. Читаем состояние элементов в state
+3. useEffect -> получаем количесво элементов
+4. Трехзначное число не помещается в элемент, потому ставим "...", если больше двузначного числа
+5. favorites добавляем в массив зависимостей
+```js
+swapi-films/src/components/Cart/Cart.jsx
+
+const Cart = () => {
+  const [ count, setCount ] = useState(0)
+  const favorites = useSelector(state => state.favorites)
+
+  useEffect(() => {
+    const length = Object.keys(favorites).length
+    length.toString().length > 2 ? setCount('...') : setCount(length)
+  }, [favorites])
+
+  return (
+    <div className={styles.cart}>
+      <Link
+        to='/favorites'
+      >
+        <span className={styles.counter}>{count}</span>
+        <CartIcon />
+      </Link>
+    </div>
+  )
+}
+```
+
+## Отображение элементов добавленных в favorites на странице FavoritePage
+
+1. Читаем состояние favorites
+2. people, setPeople
+3. Для отображения элементов будет переиспользовать компонент PeopleList
+```js
+swapi-films/src/pages/FavoritePage/FavoritePage.jsx
+
+const FavoritesPage = () => {
+  const [ people, setPeople ] = useState([])
+
+  const favorites = useSelector(state => state.favorites)
+
+  useEffect(() => {
+    const array = Object.entries(favorites) // ['3', {…}]
+    
+    if (array.length) {
+      const result = array.map(item => {
+        return {
+          id: item[0],
+          ...item[1]
+          // name: item[1].name
+        }
+      })
+      setPeople(result)
+    }
+  }, [])
+
+  return (
+    <div className={styles.wrapper}>
+      <h2>Favorites Page</h2>
+      {people.length 
+        ? <PeopleList people={people} />
+        : <h3>There are no items</h3>
+      }
+    </div>
+  )
+}
+```
+
+---
+
+## localStorage
+
+Ф-ции для работы с localStorage
+```js
+swapi-films/src/utils/localStorage.js
+
+export const getLocalStorage = key => {
+  const data = localStorage.getItem(key)
+
+  if (data !== null) {
+    return JSON.parse(data)
+  }
+  
+  return {}
+}
+
+export const setLocalStorage = (key, data) => {
+  localStorage.setItem(key, JSON.stringify(data))
+}
+```
+
+1. Подписываемся на localStorage
+2. Импортируем нашу утилиту на добавление в localStorage
+3. Называем наш ключ 'store'
+4. Указываем reducer
+```js
+swapi-films/src/store/index.js
+
+store.subscribe(() => {
+  setLocalStorage('store', store.getState().favorites)
+})
+```
+
+CHEK --> `Application / Local Storage / localhost:3000`
+
+```js
+swapi-films/src/store/reducers/favorites.reducer.js
+
+const initialState = {
+  favorites: getLocalStorage('store')
+}
+```
+
+Добаленные в favorites елементы должны сохраняться в localStorage после перегрузки страницы 
+
+---
+
+## Context / Change Theme
+1. Пишем константы названий темы.
+2. Создаем состояние
+3. Ф-ция смены темы сеттит по имени
+4. Создаем контекст для ThemeContext
+5. ThemeContext.Provider получаем текущую тему и ф-цию изменения в value
+```js
+swapi-films/src/context/ThemeProvider.jsx
+
+import React, { useState } from 'react'
+
+export const THEME_DARK = 'dark';
+export const THEME_LIGHT = 'light';
+export const THEME_NEUTRAL = 'neutral';
+
+export const ThemeContext = React.createContext()
+
+const ThemeProvider = ({ children, ...props }) => {
+  const [theme, setTheme] = useState(null)
+
+  const change = name => {
+    setTheme(name)
+  }
+
+  return (
+    <ThemeContext.Provider
+      value={{
+        theme,
+        change
+      }}
+      {...props}
+    >
+      {children}
+    </ThemeContext.Provider>
+  )
+}
+
+export default ThemeProvider
+```
+
+```js
+swapi-films/src/index.js
+
+import ThemeProvider from './context/ThemeProvider';
+ 
+return (
+  <BrowserRouter>
+    <Provider store={store}>
+      <ThemeProvider>
+        <App />
+      </ThemeProvider>
+    </Provider>
+  </BrowserRouter>
+)
+```
+
+Переключатель тем
+```js
+swapi-films/src/components/ThemeSwitcher/ThemeSwitcher.jsx
+
+import React, { useContext } from 'react'
+
+const ThemeSwitcher = () => {
+  const isTheme = useContext(ThemeContext)
+
+  return (
+    <div>
+      {isTheme.theme}
+      <button onClick={() => isTheme.change(THEME_DARK)}>Dark</button>
+      <button onClick={() => isTheme.change(THEME_LIGHT)}>Light</button>
+      <button onClick={() => isTheme.change(THEME_NEUTRAL)}>Neutral</button>
+    </div>
+  )
+}
+```
+
+Ренднрим переключатель в HomePage
+```js
+swapi-films/src/pages/HomePage/HomePage.jsx
+
+import { ThemeSwitcher } from '../../components'
+
+const HomePage = () => {
+  return (
+    <div>
+      <ThemeSwitcher />
+    </div>
+  )
+}
+```
+
+---
+
+Изменяем лого в Header при смене темы
+1. Создаем состояние иконки
+2. Получаем ThemeContext 
+3. В useEffect сеттим иконку по ключам 'dark', 'light', 'neutral'. Отслеживаем изменения isTheme
+4. Рендер
+```js
+swapi-films/src/componentes/Header/Header.jsx
+
+import React, { useContext, useEffect, useState } from 'react'
+
+import { ThemeContext, THEME_DARK, THEME_LIGHT, THEME_NEUTRAL } from '../../context/ThemeProvider'
+
+import forDark from './img/01.svg'
+import forLight from './img/02.svg'
+import forNeutral from './img/03.svg'
+
+const Header = () => {
+  const [icon, setIcon] = useState()
+  const isTheme = useContext(ThemeContext)
+
+  useEffect(() => {
+    switch (isTheme.theme) {
+      case THEME_DARK: setIcon(forDark)
+        break;
+      case THEME_LIGHT: setIcon(forLight)
+        break;
+      case THEME_NEUTRAL: setIcon(forNeutral)
+        break;
+      default: setIcon(forDark)
+    }
+  }, [isTheme])
+
+  return (
+    <ul>
+      <li>
+        <NavLink to='/people/?page=1'>People</NavLink>
+      </li>
+      <li>
+        <NavLink to='/'>
+          <img src={icon} alt='icon' />
+        </NavLink>
+      </li>
+    </ul>
+  )
+```
+
+### Изменить CSS переменные
+
+```css
+swapi-films/src/index.css
+
+:root {
+  --theme-dark:    gold;
+  --theme-light:   #0e0e0e;
+  --theme-neutral: #f00;
+  --theme-default: gold;
+}
+```
+
+```js
+swapi-films/src/services/changeCssVariables.js
+
+const changeCssVariable = theme => {
+  const root = document.querySelector(':root')
+
+  root.style.setProperty('--theme-default', `--theme-${theme}`)
+}
+```
+
+```js
+swapi-films/src/context/ThemeProvider/ThemeProvider.jsx
+
+const ThemeProvider = ({ children, ...props }) => {
+
+  const change = name => {
+    setTheme(name)
+    changeCssVariable(name)
+  }
+
+  return (
+    <ThemeContext.Provider
+      value={{
+        theme,
+        change
+      }}
+      {...props}
+    >
+      {children}
+    </ThemeContext.Provider>
+  )
+}
 ```

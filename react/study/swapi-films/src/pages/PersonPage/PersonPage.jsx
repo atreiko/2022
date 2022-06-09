@@ -4,9 +4,10 @@ import { API_PERSON } from '../../constants/api';
 import { getApiResource } from '../../utils/network';
 import { withErrorApi } from '../../hoc-helper/withErrorApi';
 import PropTypes from 'prop-types'
-import { PersonInfo, PersonLinkBack, UiLoading } from '../../components';
+import { PersonInfo, PersonLinkBack, PersonTitle, UiLoading } from '../../components';
 
 import styles from './PersonPage.module.css'
+import { useSelector } from 'react-redux';
 
 const PersonFilms = React.lazy(() => import('../../components/PersonFilms/PersonFilms'))
 
@@ -14,11 +15,17 @@ const PersonPage = ({ setErrorApi }) => {
   const [ personInfo, setPersonInfo ] = useState(null)
   const [ personName, setPersonName ] = useState(null) 
   const [ personFilms, setPersonFilms ] = useState(null)
+  const [ personId, setPersonId ] = useState(null)
+  const [ personFavorite, setPersonFavorite ] = useState(false)
+
   const { id } = useParams()
+  const favorites = useSelector(state => state.favorites)
 
   useEffect(() => {
     (async () => {
       const res = await getApiResource(`${API_PERSON}/${id}/`) // https://swapi.py4e.com/api/people/5/
+
+      favorites[id] ? setPersonFavorite(true) : setPersonFavorite(false)
 
       if (res) {
         setPersonInfo([
@@ -31,6 +38,7 @@ const PersonPage = ({ setErrorApi }) => {
         ])
 
         setPersonName(res.name)
+        setPersonId(id)
         res.films.length && setPersonFilms(res.films)
         setErrorApi(false)
       } else {
@@ -43,7 +51,12 @@ const PersonPage = ({ setErrorApi }) => {
     <>
       <PersonLinkBack />
       <div className={styles.wrapper}>
-        <h2 className={styles.title}>{personName}</h2>
+        <PersonTitle
+          personName={personName} 
+          personId={personId} 
+          personFavorite={personFavorite}
+          setPersonFavorite={setPersonFavorite}
+        /> 
         <div className={styles.info}>
           {personInfo && <PersonInfo personInfo={personInfo} />}
           {personFilms && (

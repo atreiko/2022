@@ -1,0 +1,20 @@
+.cart {
+  position: relative;
+  top: -2.8rem;
+  width: 50%;
+}
+
+.counter {
+  position: absolute;
+  display: block;
+  width: 21px;
+  height: 21px;
+  background-color: #fff;
+  border-radius: 50%;
+  text-align: center;
+  left: -4px;
+  top: -4px;
+  font-size: 12px;
+  padding-top: 3px; 
+  font-weight: bold;
+}

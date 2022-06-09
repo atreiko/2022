@@ -4,6 +4,7 @@ import PropTypes from 'prop-types'
 import styles from './PersonInfo.module.css'
 
 const PersonInfo = ({ personInfo }) => {
+
   return (
     <ul>
       {personInfo.map(({title, data}) => (

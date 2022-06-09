@@ -1,0 +1,23 @@
+.wrapper {
+  padding: 3rem;
+}
+
+.wrapper h3 {
+  color: var(--theme-default);
+}
+
+.wrapper h3 > span {
+  color: var(--color-white);
+  margin-left: 1rem;
+}
+
+.wrapper button {
+  padding: .5rem;
+  border: 1px solid var(--theme-default);
+  margin-top: 1rem;
+  margin-right: 1rem;
+  border-radius: 3px;
+  color: var(--theme-default);
+  background-color: transparent;
+  cursor: pointer;
+}

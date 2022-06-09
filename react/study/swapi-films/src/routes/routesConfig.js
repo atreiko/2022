@@ -1,18 +1,8 @@
-// import HomePage from '@containers/HomePage';
-// import PeoplePage from '@containers/PeoplePage';
-// import PersonPage from '@containers/PersonPage';
-// import SearchPage from '@containers/SearchPage';
-// import FavoritesPage from '@containers/FavoritesPage';
-// import NotFoundPage from '@containers/NotFoundPage';
-
-// import ErrorMessage from '@components/ErrorMessage';
-// import { HomePage, PeoplePage } from '../pages';
-// import { HomePage, PeoplePage } from '../pages';
-
 import HomePage from '../pages/HomePage/HomePage'
 import PeoplePage from '../pages/PeoplePage/PeoplePage'
 import NotFoundPage from '../pages/NotFoundPage/NotFoundPage';
 import PersonPage from '../pages/PersonPage/PersonPage';
+import FavoritesPage from '../pages/FavoritesPage/FavoritesPage';
 
 const routesConfig = [
   { 
@@ -31,10 +21,20 @@ const routesConfig = [
     element: <PersonPage />
   },
   {
-    id: 'notfound',
+    id: 'favorites',
+    path: 'favorites',
+    element: <FavoritesPage />
+  },
+  {
+    id: 'not-found',
     path: '*',
     element: <NotFoundPage />
   },
+  // {
+  //   id: 'undefined',
+  //   path: '*',
+  //   element: <NotFoundPage />
+  // }
   // {
   //     path: '/people/:id',
   //     element: <PersonPage />
