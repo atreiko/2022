@@ -1305,7 +1305,7 @@ SearchPeople.propTypes = {
 export default SearchPeople
 ```
 
-Когда заходим на SearchPage - мы сразу видем <h2>No results</h2>.
+Когда заходим на SearchPage - мы сразу видем No results.
 Чтоб сразу получать список всех - добавляем в getResponse('') в useEffect
 
 ```js
