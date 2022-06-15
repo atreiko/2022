@@ -1,0 +1,8 @@
+.wrapper {
+  padding: 0 3rem;
+}
+
+.wrapper h2 {
+  margin: 1rem 0;
+  color: var(--theme-default-elem);
+}

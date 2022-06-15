@@ -6,6 +6,7 @@
   color: var(--color-white);
   cursor: pointer;
   transition: var(--transition);
+  background-color: rgba(0, 0, 0, .5);
 }
 
 .btn:disabled,

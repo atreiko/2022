@@ -13,10 +13,15 @@
   --bg-light: #fff;
   --bg-neutral: #cecece;
 
-  --theme-dark:    gold;
-  --theme-light:   #0e0e0e;
-  --theme-neutral: #f00;
-  --theme-default: gold;
+  --theme-dark-elem:    gold;
+  --theme-light-elem:   #000;
+  --theme-neutral-elem: #f00;
+  --theme-default-elem: var(--theme-dark-elem);
+
+  --theme-dark-bg: #0e0e0e;
+  --theme-light-bg: #f9f5f5;
+  --theme-neutral-bg: #c0c0c0;
+  --theme-default-bg: var(--theme-dark-bg);
 }
 
 * {
@@ -29,7 +34,7 @@ body {
   font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
   'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
   sans-serif;
-  background-color: var(--bg-dark);
+  background-color: var(--theme-default-bg);
 }
 
 li {
@@ -39,5 +44,15 @@ li {
 a {
   text-decoration: none;
   color: inherit;
+}
+
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+::-webkit-scrollbar-thumb {
+  background-color: var(--theme-default-elem);
+  border-radius: 3px;
 }
 

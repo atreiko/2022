@@ -1,12 +1,14 @@
 import React, { useEffect, useState } from 'react'
-import styles from './PeoplePage.module.css'
+
 import { getApiResource } from '../../utils/network'
 import { API_PEOPLE } from '../../constants/api'
 import { getPeopleId, getPeoplePageId } from '../../services/getPeopleData'
 import { PeopleList, PeopleNavigation } from '../../components'
 import { withErrorApi } from '../../hoc-helper/withErrorApi'
-import PropTypes from 'prop-types'
 import { useQueryParams } from '../../hooks/useQueryParams'
+import PropTypes from 'prop-types'
+
+import styles from './PeoplePage.module.css'
 
 const PeoplePage = ({ setErrorApi }) => {
   const [ people, setPeople ] = useState(null)

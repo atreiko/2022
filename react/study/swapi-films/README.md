@@ -133,6 +133,7 @@ swapi-films/src/pages/PeoplePage/PeoplePage.jsx
 ---
 
 ## Higher Order Component для отлова ошибок
+
 * HOC - компонент, который принимает пропсом компонент, возвращая преобразует его в другой компонент
 * View - это компонент, который мы хотим отобразить, если ошибки нету, иначе вернет компонент Error
 ```js
@@ -700,6 +701,7 @@ return (
 ---
 
 ### redux-devtools-extesion, applyMiddleware, thunk
+
 ```js
 swapi-films/src/store/index.js
 
@@ -957,11 +959,12 @@ const initialState = {
 }
 ```
 
-Добаленные в favorites елементы должны сохраняться в localStorage после перегрузки страницы 
+Добаленные в favorites елементы должны сохраняться в localStorage после перезагрузки страницы 
 
 ---
 
 ## Context / Change Theme
+
 1. Пишем константы названий темы.
 2. Создаем состояние
 3. Ф-ция смены темы сеттит по имени
@@ -1022,6 +1025,7 @@ return (
 swapi-films/src/components/ThemeSwitcher/ThemeSwitcher.jsx
 
 import React, { useContext } from 'react'
+import { ThemeContext, THEME_DARK, THEME_LIGHT, THEME_NEUTRAL } from '../../context/ThemeProvider'
 
 const ThemeSwitcher = () => {
   const isTheme = useContext(ThemeContext)
@@ -1102,29 +1106,35 @@ const Header = () => {
 
 ### Изменить CSS переменные
 
+Элементы свойство которых будет --theme-default - будут изменяться в зависимости от выбранной темы.
+Добавляем переменные c пометкой elem и вариантами dark, light, neutral, default
 ```css
 swapi-films/src/index.css
 
 :root {
-  --theme-dark:    gold;
-  --theme-light:   #0e0e0e;
-  --theme-neutral: #f00;
-  --theme-default: gold;
+  --theme-dark-elem:    gold;
+  --theme-light-elem:   #0e0e0e;
+  --theme-neutral-elem: #f00;
+  --theme-default-elem: var(--theme-dark-elem);
 }
 ```
 
+Ф-ция находит элемент с переменной --theme-default-elem и изменяет вариант на текущий.
 ```js
 swapi-films/src/services/changeCssVariables.js
 
 const changeCssVariable = theme => {
   const root = document.querySelector(':root')
 
-  root.style.setProperty('--theme-default', `--theme-${theme}`)
+  root.style.setProperty('--theme-default-elem', `var(--theme-${theme}-elem)`)
 }
 ```
 
+Прокидывакм вариант темы в changeCssVariable. Где ф-ция change - является обработчиком событий при нажатии
 ```js
 swapi-films/src/context/ThemeProvider/ThemeProvider.jsx
+
+import { changeCssVariable } from '../services/changeCssVariables'
 
 const ThemeProvider = ({ children, ...props }) => {
 
@@ -1144,5 +1154,273 @@ const ThemeProvider = ({ children, ...props }) => {
       {children}
     </ThemeContext.Provider>
   )
+}
+```
+
+### Изменить background
+
+Добавляем переменные c пометкой bg и вариантами dark, light, neutral, default
+```css
+swapi-films/src/index.css
+
+:root {
+  --theme-dark-bg:    #0e0e0e;
+  --theme-light-bg:   #f9f5f5;
+  --theme-neutral-bg: #c0c0c0;
+  --theme-default-bg: var(--theme-dark-bg);
+}
+```
+
+Ищем все --theme-default-bg и меняем на текущую тему
+```js
+swapi-films/src/services/changeCssVariables.js
+
+export const changeCssVariable = theme => {
+  const root = document.querySelector(':root')
+
+  root.style.setProperty('--theme-default-elem', `var(--theme-${theme}-elem)`)
+  root.style.setProperty('--theme-default-bg', `var(--theme-${theme}-bg)`) // <--
+}
+```
+
+Для всех элементов на которые влияет смена темы будет дефолтное значение --theme-default
+Для ряда схожих элементов мы будем записывать ключ -bg или -elem в нашем примере
+Уникальные значения можно вынести в массив и пройтись циклом forEach. 
+```js
+export const changeCssVariable = theme => {
+  const root = document.querySelector(':root')
+
+  const cssVariables = ['elem', 'bg']
+
+  cssVariables.forEach(element => {
+    root.style.setProperty(
+      `--theme-default-${element}`,
+      `var(--theme-${theme}-${element})`
+    )
+  })
+}
+```
+
+Добавляя новые элементы - 
+записываем новые значения в массив. 
+```js
+const cssVariables = ['elem', 'bg', 'title'] 
+// --theme-default-title
+```
+
+---
+
+## Search
+
+1. Создаем SearchPage, route, Link перехода на страницу.
+2. Создаем состояние inputValue и people
+3. Создаем ф-ю обработчик события handleInputChange
+4. Из HOC получаем ф-ю setErrorApi
+5. Получаем response поиска.
+* API_SEARCH = https://swapi.py4e.com/api/people/?search=
+* param - это value нашего input
+6. Через map вытаскиваем нужные поля. getPeopleId(url) - получаем ID из url
+7. Сеттим people
+8. В компонент SearchPeople передаем people
+```js
+swapi-films/src/pages/SearchPage/SearchPage.jsx
+
+const SearchPage = ({ setErrorApi }) => {
+  const [ inputValue, setInputValue ] = useState('')
+  const [ people, setPeople ] = useState([])
+
+  const getResponse = async param => {
+    const res = await getApiResource(API_SEARCH + param)
+ 
+    if (res) {
+      const peopleList = res.results.map(({ name, url }) => {
+        const id = getPeopleId(url)
+
+        return {
+          id,
+          name
+        }
+      })
+      setPeople(peopleList)
+      setErrorApi(false)
+    } else {
+      setErrorApi(true)
+    }
+  }
+
+  const handleInputChange = event => {
+    const value = event.target.value
+    setInputValue(value)
+    getResponse(value)
+  }
+
+  return ( 
+    <div className={styles.wrapper}>
+      <h2>Search</h2>
+      <input 
+        type='text' 
+        value={inputValue}
+        onChange={handleInputChange}
+        placeholder='Input character name'
+      /> 
+      <SearchPeople people={people} />
+    </div>
+  )
+}
+
+SearchPage.propTypes = {
+  setErrorApi: PropTypes.func
+}
+
+export default withErrorApi(SearchPage)
+```
+
+```js
+swapi-films/src/components/SearchPeople/SearchPeople.jsx
+
+const SearchPeople = ({ people }) => (
+  <>
+    {
+      people.length
+      ? (
+        <ul className={styles.list}>
+          {people.map(({ id, name}) => (
+            <li className={styles.item} key={id}>
+              <Link to={`/people/${id}`}>
+                {name}
+              </Link>
+            </li>
+          ))}
+        </ul> 
+      )
+      : <h2>No results</h2>
+    }
+  </>
+)
+
+SearchPeople.propTypes = {
+  people: PropTypes.array
+}
+
+export default SearchPeople
+```
+
+Когда заходим на SearchPage - мы сразу видем <h2>No results</h2>.
+Чтоб сразу получать список всех - добавляем в getResponse('') в useEffect
+
+```js
+swapi-films/src/pages/SearchPage/SearchPage.jsx
+
+  useEffect(() => {
+    getResponse('')
+  }, [])
+```
+
+### debounce (lodash), useCallback
+debounce принимает ф-ю и время задержки.
+```js
+swapi-films/src/pages/SearchPage/SearchPage.jsx
+
+import React, { useCallback } from 'react'
+import { debounce } from 'lodash'
+
+const debouncedGetResponse = useCallback(debounce(value => getResponse(value), 300), [])
+
+const handleInputChange = event => {
+  const value = event.target.value
+  setInputValue(value)
+  // getResponse(value) ! delete
+  debouncedGetResponse(value)
+}
+```
+
+---
+
+### Декомпозиция UiInput
+
+CancelIcon принимает в себя handleInputChange, что при нажатии позволит очищать инпут.
+value манипулирует стилями. Когда true - CancelIcon видно.
+```js
+swapi-films/components/UI/UiInput/UiInput.jsx
+
+const UiInput = ({
+  type = 'text', 
+  value, 
+  handleInputChange, 
+  placeholder, 
+  classes
+}) => {
+  return (
+    <div className={[styles.wrapper, classes].join(' ')}>
+      <input 
+        type={type} 
+        value={value} 
+        onChange={(e) => handleInputChange(e.target.value)} // <-- 
+        placeholder={placeholder} 
+      />
+      <CancelIcon handleInputChange={handleInputChange} value={!!value} />
+    </div>
+  )
+}
+```
+
+Теперь ф-ия принимает value
+```js
+swapi-films/src/pages/SearchPage/SearchPage.jsx
+
+const handleInputChange = value => {
+  // const value = event.target.value ! deleted
+  setInputValue(value)
+  getResponse(value)
+}
+
+  return ( 
+    <div className={styles.wrapper}>
+      <h2>Search</h2>
+      <UiInput 
+        type='text' 
+        value={inputValue}
+        handleInputChange={handleInputChange}
+        placeholder='Input character name'
+      /> 
+      <SearchPeople people={people} />
+    </div>
+  )
+```
+
+```js
+swapi-films/src/assets/CancelIcon.jsx
+
+const CancelIcon = ({ value, handleInputChange }) => 
+
+  const styles = {
+    opacity: value ? '1' : '0'
+  }
+
+    return (
+    <svg 
+      onClick={() => handleInputChange('')}
+      style={styles}
+    >
+      <g>
+        <path fill='#7c7c7c' d="M1.63,97.99l36.55-36.55L1.63,24.89c-2.17-2.17-2.17-5.73,0-7.9L16.99,1.63c2.17-2.17,5.73-2.17,7.9,0 l36.55,36.55L97.99,1.63c2.17-2.17,5.73-2.17,7.9,0l15.36,15.36c2.17,2.17,2.17,5.73,0,7.9L84.7,61.44l36.55,36.55 c2.17,2.17,2.17,5.73,0,7.9l-15.36,15.36c-2.17,2.17-5.73,2.17-7.9,0L61.44,84.7l-36.55,36.55c-2.17,2.17-5.73,2.17-7.9,0 L1.63,105.89C-0.54,103.72-0.54,100.16,1.63,97.99L1.63,97.99z"/>
+      </g>
+    </svg>
+  )
+```
+
+--- 
+
+## Scrollbar
+
+```css
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+::-webkit-scrollbar-thumb {
+  background-color: var(--theme-default-elem);
+  border-radius: 3px;
 }
 ```

@@ -3,21 +3,21 @@
 }
 
 .wrapper h3 {
-  color: var(--theme-default);
+  color: var(--theme-default-elem);
 }
 
 .wrapper h3 > span {
-  color: var(--color-white);
+  color: var(--theme-default-elem);
   margin-left: 1rem;
 }
 
 .wrapper button {
   padding: .5rem;
-  border: 1px solid var(--theme-default);
+  border: 1px solid var(--theme-default-elem);
   margin-top: 1rem;
   margin-right: 1rem;
   border-radius: 3px;
-  color: var(--theme-default);
+  color: var(--theme-default-elem);
   background-color: transparent;
   cursor: pointer;
 }

@@ -4,5 +4,5 @@
 
 .wrapper h2,
 .wrapper h3 {
-  color: gold;
+  color: var(--theme-default-elem)
 }

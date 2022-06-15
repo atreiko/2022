@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import changeCssVariable from '../services/changeCssVariables'
+import { changeCssVariable } from '../services/changeCssVariables'
 
 export const THEME_DARK = 'dark';
 export const THEME_LIGHT = 'light';

@@ -11,7 +11,7 @@ const CartIcon = () => {
       viewBox="0 0 512 512"
     >
       <path 
-        fill="gold"
+        fill="var(--theme-default-elem)"
         d="M410.9,0H85.1C72.3,0,61.8,10.4,61.8,23.3V512L248,325.8L434.2,512V23.3C434.2,10.4,423.8,0,410.9,0z"
       />
     </svg>

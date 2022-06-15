@@ -1,0 +1,23 @@
+.wrapper {
+  position: relative;
+  display: inline-block;
+}
+
+.wrapper input {
+  min-width: 300px;
+  padding: .5rem;
+  outline: none;
+}
+
+/* .wrapper div {
+  display: inline-block;
+  position: absolute;
+  left: 330px;
+  top: .5rem;
+} */
+
+.wrapper svg {
+  position: absolute;
+  right: 1rem;
+  top: .6rem;
+}
