@@ -1,0 +1,15 @@
+.wrapper {
+  display: flex;
+  align-items: center;
+  font-weight: 600;
+  font-size: 1.5rem;
+}
+
+.wrapper img {
+  margin-right: 8px;
+}
+
+.wrapper span {
+  color: var(--theme-default-text);
+  transition: .5s;
+}

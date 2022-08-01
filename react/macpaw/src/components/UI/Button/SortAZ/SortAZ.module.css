@@ -1,0 +1,34 @@
+.sort {
+  width: 100%;
+  border-radius: var(--border-radius-s) !important;
+  background-color: var(--theme-default-post);
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.sort.up {
+  grid-column: 9/10;
+  grid-row: 1/2;
+}
+
+.sort.down {
+  grid-column: 10/11;
+  grid-row: 1/2;
+}
+
+@media screen and (max-width: 375px) {
+  .sort.up,
+  .sort.down {
+    grid-row: 3/4;
+  }
+
+  .sort.up {
+    grid-column: 7/9;
+  }
+
+  .sort.down {
+    grid-column: 9/11;
+  }
+}

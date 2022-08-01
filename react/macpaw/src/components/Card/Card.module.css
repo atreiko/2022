@@ -1,0 +1,78 @@
+.card {
+  max-width: 154px;
+  max-height: 244px;
+  border-radius: var(--border-radius-m);
+}
+
+.image {
+  height: 198px;
+  margin-bottom: 10px;
+  border-radius: var(--border-radius-m);
+  position: relative;
+  border: 4px solid #FFFFFF99;
+}
+
+.blue {
+  background: var(--color-blue);
+}
+.green {
+  background: var(--color-green);
+}
+.yellow {
+  background: var(--color-yellow);
+}
+
+.search,
+.breeds,
+.vote {
+  background-repeat: no-repeat;
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
+}
+
+.vote {
+  background-image: url('./images/vote-table.svg');
+  width: 111.21px;
+  height: 124.47px;
+  top: 2.5rem;
+
+}
+
+.breeds {
+  background-image: url('./images/pet-breeds.svg');
+  width: 130.12px;
+  height: 163px;
+  top: 1.5rem;
+}
+
+.search {
+  background-image: url('./images/images-search.svg');
+  width: 124.56px;
+  height: 190px;
+  bottom: 0;
+}
+
+.card:hover button {
+  background-color: var(--color-pink-light);
+}
+
+/* ! WHY ? */
+.card.active .card.image {
+  border-color: #fff;
+}
+
+.card.active .card button {
+  background-color: var(--color-pink);
+  color: var(--color-white);
+}
+
+@media screen and (max-width: 375px) {
+  .card {
+    max-width: 100%;
+  }
+  
+  .image {
+    display: none;
+  }
+}

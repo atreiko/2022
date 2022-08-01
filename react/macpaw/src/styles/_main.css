@@ -1,0 +1,27 @@
+html {
+  height: 100%;
+  font-size: var(--font-s);
+}
+
+body {
+  height: 100%;
+  font-family: var(--font-primary);
+  color: var(--theme-default-text);
+  line-height: 24px;
+  transition: .5s;
+  background-color: var(--theme-default-bg);
+  overflow: hidden;
+}
+
+.active:hover button > span {
+  color: var(--color-pink);
+  transition: .5s;
+}
+
+.active button {
+  background-color: var(--color-pink);
+}
+
+.active button > span {
+  color: var(--color-white);
+}

@@ -1,0 +1,21 @@
+.button {
+  width: 100%;
+  background-color: var(--theme-default-button);
+  padding: 10px 0;
+  text-align: center;
+  border-radius: var(--border-radius-s);
+  border: none;
+  transition: .5s;
+}
+
+.button span {
+  font-size: var(--font-xs);
+  text-transform: uppercase;
+  line-height: 16px;
+  letter-spacing: 2px;
+  color: var(--color-pink);
+}
+
+.button:hover {
+  background-color: var(--color-pink-light);
+}

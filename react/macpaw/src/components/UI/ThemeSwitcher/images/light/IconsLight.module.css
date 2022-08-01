@@ -1,0 +1,33 @@
+.wrapper {
+  display: flex;
+  width: 73px;
+}
+
+.wrapper div:first-child {
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  background-color: var(--theme-default-button);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-right: 5px;
+}
+
+.wrapper div:last-child {
+  position: relative;
+  right: 0;
+}
+
+.switch img:first-child {
+  position: absolute;
+  left: 0;
+  
+}
+
+.switch img:last-child {
+  position: absolute;
+  left: 24px;
+  top: 4px;
+}
+

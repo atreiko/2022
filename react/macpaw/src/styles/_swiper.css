@@ -1,0 +1,28 @@
+.swiper-pointer-events {
+  overflow-y: visible;
+  overflow-x: hidden;
+}
+
+
+.swiper-pagination {
+  background-color: #fff;
+  width: 90px;
+  height: 30px;
+  padding-top: 15px;
+  border-radius: var(--border-radius-m);
+  background-color: var(--theme-default-slider);
+  position: relative !important;
+  bottom: 1.5rem !important;
+}
+
+.swiper-pagination .swiper-pagination-bullet {
+  width: 10px;
+  height: 10px;
+  background-color: #fbc3b9;
+}
+
+/*
+swiper-pagination-bullet
+swiper-pagination-bullet-active
+swiper-pagination-bullet-active-main
+*/

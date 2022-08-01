@@ -1,0 +1,62 @@
+.wrapper {
+  grid-row: 1/2;
+
+  display: grid;
+  grid-template-columns: repeat(10, 1fr);
+  gap: 10px;
+
+  margin-bottom: 10px;
+}
+
+.link {
+  grid-row: 1/2;
+  background-color: var(--theme-default-button);
+  border-radius: var(--border-radius-m);
+  padding: 20px 15px;
+  background-repeat: no-repeat;
+  background-position: 50% 50%;
+  outline: none;
+}
+
+.link:nth-child(3) {
+  grid-column: 8/9;
+  background-image: url('../UI/Button/images/like.svg');
+}
+
+.link:nth-child(4) {
+  grid-column: 9/10;
+  background-image: url('../UI/Button/images/favorite.svg');
+}
+
+.link:nth-child(5){
+  grid-column: 10/11;
+  background-image: url('../UI/Button/images/dislike.svg');
+}
+
+.link[aria-current] {
+  background-color: var(--color-pink);
+}
+
+.link[aria-current]:nth-child(3) {
+  background-image: url('../UI/Button/images/like-white.svg');
+}
+
+.link[aria-current]:nth-child(4) {
+  background-image: url('../UI/Button/images/favorite-white.svg');
+}
+
+.link[aria-current]:nth-child(5) {
+  background-image: url('../UI/Button/images/dislike-white.svg');
+}
+
+@media screen and (max-width: 375px) {
+  .link:nth-child(3) {
+    grid-column: 5/7;
+  }
+  .link:nth-child(4) {
+    grid-column: 7/9;
+  }
+  .link:nth-child(5) {
+    grid-column: 9/11;
+  }
+}

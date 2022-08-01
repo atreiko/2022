@@ -1,0 +1,25 @@
+
+.wrapper {
+  height: 100%;
+  overflow: hidden;
+  position: relative;
+}
+
+.wrapper.home {
+  background-color: var(--theme-default-home);
+  position: relative;
+  overflow: visible;
+}
+
+@media screen and (max-width: 768px) {
+  .wrapper {
+    grid-template-rows: repeat(9, 1fr);
+  }
+}
+
+@media screen and (max-width: 768px) {
+  .wrapper.home.tablet {
+    display: none;
+  }
+}
+

@@ -1,0 +1,8 @@
+.parent {
+  position: relative;
+}
+
+.child {
+  position: absolute;
+  inset: auto;
+}
