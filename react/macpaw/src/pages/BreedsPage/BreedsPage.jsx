@@ -1,12 +1,18 @@
 import React, { useEffect, useState } from 'react'
-import { Page, PageContent, PageHead } from '../../components'
-import { SortAZ } from '../../components/UI'
-import Select from 'react-select'
 import { useFetching } from '../../hooks/useFetching'
+import { Link } from 'react-router-dom'
+
+import { 
+  Page, 
+  PageContent, 
+  PageHead, 
+  Mosaic 
+} from '../../components'
+
+import { SortAZ } from '../../components/UI'
 import PostService from '../../services/api/postService'
 
 import styles from './BreedsPage.module.css'
-import { Link } from 'react-router-dom'
 
 const limits = [5, 10, 15, 20]
 
@@ -72,24 +78,11 @@ const BreedsPage = () => {
         <SortAZ sortAZ={sortZA} />
         <SortAZ sortZA={sortAZ} state='down' />
         { breedsError && <h1>{breedsError}</h1> }
-        <div className={styles.mosaic}>
-          {
-            breeds &&
-              breeds
-                .filter(item => item.name.toLowerCase().includes(query))
-                // .filter(({ name }) => name === selectedBreed)
-                .sort((itemA, itemB) => itemA.name < itemB.name ? azToogle : azToogle)
-                .map(({ id, name, image }) => (
-                  <Link key={id} to={`/breeds/${id}`}>
-                    <img src={image.url} alt={name} />
-                    <div children={styles.name}>{name}</div> 
-                  </Link>
-                ))
-          }
-        </div>
+        <Mosaic isLink={true} breeds={breeds} query={query} azToogle={azToogle} />
       </PageContent>
     </Page>
   )
 }
 
 export default BreedsPage
+

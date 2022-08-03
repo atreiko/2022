@@ -29,6 +29,7 @@
 
   .inner {
     grid-template-columns: repeat(1, 1fr);
+    grid-template-rows: 100vh; /*! */
   }
 
   .inner.home div:nth-child(2) {
@@ -37,6 +38,11 @@
 }
 
 @media screen and (max-width: 375px) {
+  
+  .inner {
+    grid-template-rows: auto;
+  }
+
   .container {
     height: 96vh;
     width: 92vw;

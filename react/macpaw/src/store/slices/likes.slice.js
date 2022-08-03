@@ -9,6 +9,8 @@ const likesSlice = createSlice({
   reducers: {
 
     addToLikes(state, action) {
+      console.log(state.payload);
+      console.log('add to likes slice', action.action)
       console.log('likes action', action);
       state.likes.push({
         label: 'likes',

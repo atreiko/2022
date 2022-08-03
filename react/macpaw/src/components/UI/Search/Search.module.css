@@ -2,7 +2,7 @@
   grid-row: 1/2;
   grid-column: 1/8;
   border-radius: var(--border-radius-m);
-  background-color: var(--theme-default-button);
+  background-color: var(--theme-default-post);
 
   display: flex;
   position: relative;

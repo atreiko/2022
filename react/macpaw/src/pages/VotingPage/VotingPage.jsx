@@ -31,7 +31,7 @@ const VotingPage = () => {
     return <h1>LOADING...</h1>
   }
 
-  console.log(reactions);
+  console.log(cat);
 
   return (
     <Page>

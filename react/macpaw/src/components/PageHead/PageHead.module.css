@@ -10,7 +10,7 @@
 
 .link {
   grid-row: 1/2;
-  background-color: var(--theme-default-button);
+  background-color: var(--theme-default-post);
   border-radius: var(--border-radius-m);
   padding: 20px 15px;
   background-repeat: no-repeat;

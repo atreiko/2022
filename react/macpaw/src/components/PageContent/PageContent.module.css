@@ -1,5 +1,5 @@
 .content {
-  background-color: var(--theme-default-button);
+  background-color: var(--theme-default-post);
   padding: 20px;
   height: 100%;
   overflow-y: scroll;
@@ -42,7 +42,7 @@
 }
 
 .inner .current {
-  grid-column: 2/4;
+  /* grid-column: 2/4; */
 }
 
 @media screen and (max-width: 375px) {
